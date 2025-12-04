@@ -136,7 +136,7 @@ fun HomeHeader(
             Text(
                 text = "Hola, $userName.",
                 style = MaterialTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.SemiBold
                 ),
                 color = Color.White
             )
