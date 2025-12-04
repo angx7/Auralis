@@ -71,7 +71,7 @@ fun HeaderAuth(title: String, subtitle: String) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.SemiBold
                 ),
                 color = colorScheme.onPrimary
             )
