@@ -1,4 +1,4 @@
-package com.example.cameratest.ui.screens
+package com.example.cameratest.ui.screens.home
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +15,7 @@ fun HomeScreen(navController: NavController) {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Button(onClick = { navController.navigate(Routes.Camera.route) }) {
+        Button(onClick = {  }) {
             Text("Comenzar a tocar")
         }
     }

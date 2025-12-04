@@ -1,4 +1,4 @@
-package com.example.cameratest.ui.screens
+package com.example.cameratest.ui.screens.camera
 
 import android.Manifest
 import android.content.Context
@@ -10,6 +10,7 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -81,7 +82,7 @@ fun CameraScreen(viewModel: CameraViewModel = viewModel()) {
             AndroidView(
                 modifier = Modifier.fillMaxSize(),
                 factory = { ctx ->
-                    val previewView = androidx.camera.view.PreviewView(ctx)
+                    val previewView = PreviewView(ctx)
                     preview.setSurfaceProvider(previewView.surfaceProvider)
                     previewView
                 }
