@@ -1,6 +1,27 @@
 package com.example.cameratest.navigation
 
-sealed class Routes(val route: String) {
-    object Home : Routes("home")
-    object Camera : Routes("camera")
-}
+import kotlinx.serialization.Serializable
+
+@Serializable
+object HomeScreenRoute
+
+@Serializable
+object LoginScreenRoute
+
+@Serializable
+object RegisterScreenRoute
+
+@Serializable
+object PracticeScreenRoute
+
+@Serializable
+object HistoryScreenRoute
+
+@Serializable
+object ProgressScreenRoute
+
+@Serializable
+object EditUserScreenRoute
+
+@Serializable
+object CameraScreenRoute
