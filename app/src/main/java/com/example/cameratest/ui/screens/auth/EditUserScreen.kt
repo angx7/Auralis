@@ -48,9 +48,6 @@ fun EditUserScreen(
     var fullName by remember { mutableStateOf("Alex Taco") }
     var email by remember { mutableStateOf("alex@auralis.app") }
 
-    // Para cambio de contraseña opcional
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -103,46 +100,6 @@ fun EditUserScreen(
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Email,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                // ---------- CAMBIO DE CONTRASEÑA (OPCIONAL) ----------
-                Text(
-                    text = "Change password (optional)",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = colorScheme.onSurfaceVariant,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp)
-                )
-
-                // NEW PASSWORD
-                AuralisPasswordField(
-                    value = password,
-                    onValueChange = { password = it },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Lock,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // CONFIRM NEW PASSWORD
-                AuralisPasswordField(
-                    value = confirmPassword,
-                    onValueChange = { confirmPassword = it },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Lock,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
