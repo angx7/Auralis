@@ -88,7 +88,7 @@ fun AuralisScreenHeader(
             Text(
                 text = title,
                 style = MaterialTheme.typography.headlineSmall.copy(
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.SemiBold
                 ),
                 color = Color.White
             )
