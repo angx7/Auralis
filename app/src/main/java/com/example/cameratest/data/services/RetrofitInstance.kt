@@ -32,4 +32,9 @@ object RetrofitInstance {
     val aiService: AiService by lazy {
         retrofit.create(AiService::class.java)
     }
+
+    val songsService: SongService by lazy {
+        retrofit.create(SongService::class.java)
+    }
+
 }
