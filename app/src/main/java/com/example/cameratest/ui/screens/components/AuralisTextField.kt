@@ -2,6 +2,7 @@ package com.example.cameratest.ui.screens.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -10,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -19,7 +21,8 @@ fun AuralisTextField(
     onValueChange: (String) -> Unit,
     placeholder: String,
     leadingIcon: @Composable (() -> Unit)? = null,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    imeAction: ImeAction,
+    keyboardActions: KeyboardActions? = null
 ) {
     val colorScheme = MaterialTheme.colorScheme
 
@@ -38,7 +41,8 @@ fun AuralisTextField(
         singleLine = true,
         shape = RoundedCornerShape(40.dp),
         leadingIcon = leadingIcon,
-        keyboardOptions = keyboardOptions,
+        keyboardOptions = KeyboardOptions(imeAction = imeAction),
+        keyboardActions = keyboardActions ?: KeyboardActions(),
         colors = OutlinedTextFieldDefaults.colors(
             focusedContainerColor = colorScheme.surface,
             unfocusedContainerColor = colorScheme.surface,

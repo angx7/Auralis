@@ -2,6 +2,8 @@ package com.example.cameratest.ui.screens.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -26,7 +29,9 @@ fun AuralisPasswordField(
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String = "Password",
-    leadingIcon: @Composable (() -> Unit)? = null
+    leadingIcon: @Composable (() -> Unit)? = null,
+    imeAction: ImeAction,
+    keyboardActions: KeyboardActions? = null
 ) {
     var isVisible by remember { mutableStateOf(false) }
     val colorScheme = MaterialTheme.colorScheme
@@ -59,6 +64,8 @@ fun AuralisPasswordField(
         },
         visualTransformation = if (isVisible) VisualTransformation.None else PasswordVisualTransformation(),
         shape = RoundedCornerShape(40.dp),
+        keyboardOptions = KeyboardOptions(imeAction = imeAction),
+        keyboardActions = keyboardActions ?: KeyboardActions(),
         colors = OutlinedTextFieldDefaults.colors(
             focusedContainerColor = colorScheme.surface,
             unfocusedContainerColor = colorScheme.surface,
