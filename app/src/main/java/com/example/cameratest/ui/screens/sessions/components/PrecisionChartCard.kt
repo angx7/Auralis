@@ -1,13 +1,10 @@
+// ui/screens/sessions/components/PrecisionChartCard.kt
 package com.example.cameratest.ui.screens.sessions.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,21 +17,16 @@ import androidx.compose.ui.unit.dp
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.model.Point
 import co.yml.charts.ui.linechart.LineChart
-import co.yml.charts.ui.linechart.model.GridLines
-import co.yml.charts.ui.linechart.model.IntersectionPoint
-import co.yml.charts.ui.linechart.model.Line
-import co.yml.charts.ui.linechart.model.LineChartData
-import co.yml.charts.ui.linechart.model.LinePlotData
-import co.yml.charts.ui.linechart.model.LineStyle
-import co.yml.charts.ui.linechart.model.ShadowUnderLine
+import co.yml.charts.ui.linechart.model.*
 import com.example.cameratest.ui.theme.BrainCircuit
 import com.example.cameratest.ui.theme.CameraTestTheme
 
-// =====================================================================
-//  CARD GRANDE: Informe de IA + Gráfica
-// =====================================================================
 @Composable
-fun PrecisionChartCard() {
+fun PrecisionChartCard(
+    resumen: String,
+    chartValues: List<Float>,
+    precisionActual: Int?
+) {
     val colorScheme = MaterialTheme.colorScheme
 
     Card(
@@ -53,7 +45,7 @@ fun PrecisionChartCard() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            // ========== HEADER DEL INFORME ==========
+            // HEADER
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -99,9 +91,9 @@ fun PrecisionChartCard() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // ========== TEXTO DEL INFORME ==========
+            // TEXTO DEL INFORME (del backend)
             Text(
-                text = "¡Increíble avance, Alex!",
+                text = "Resumen de tus sesiones:",
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.SemiBold
                 ),
@@ -111,10 +103,7 @@ fun PrecisionChartCard() {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "En el último mes, la IA ha detectado una mejora del 15% en tu " +
-                        "precisión rítmica, especialmente en piezas de Mozart. Tu control " +
-                        "de la dinámica ha sido sobresaliente en pasajes suaves. Sigue así, " +
-                        "tu constancia está dando frutos.",
+                text = resumen,
                 style = MaterialTheme.typography.bodyMedium,
                 color = colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Start
@@ -122,26 +111,42 @@ fun PrecisionChartCard() {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // ========== SECCIÓN DE LA GRÁFICA ==========
-            PrecisionChartSection()
+            PrecisionChartSection(
+                values = chartValues,
+                precisionActual = precisionActual
+            )
         }
     }
 }
 
-// =====================================================================
-//  SOLO la sección de la gráfica (sin Card externa)
-// =====================================================================
 @Composable
-private fun PrecisionChartSection() {
+private fun PrecisionChartSection(
+    values: List<Float>,
+    precisionActual: Int?
+) {
     val colorScheme = MaterialTheme.colorScheme
 
-    // Datos mock
-    val values = listOf(72f, 78f, 80f, 84f, 88f, 92f)
+    if (values.isEmpty()) {
+        // Estado vacío
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Aún no hay suficientes datos para mostrar tu gráfica.",
+                style = MaterialTheme.typography.bodySmall,
+                color = colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+        }
+        return
+    }
+
     val points = values.mapIndexed { index, v -> Point(index.toFloat(), v) }
     val lastPoint = points.last()
     val lineColor = colorScheme.primary
 
-    // Eje X (sin labels)
+    // Eje X sin labels visibles
     val xAxisData = AxisData.Builder()
         .axisStepSize(40.dp)
         .steps(points.size - 1)
@@ -153,7 +158,7 @@ private fun PrecisionChartSection() {
 
     // Eje Y sin labels visibles (solo gridlines)
     val yAxisData = AxisData.Builder()
-        .steps(4)
+        .steps(6)
         .axisOffset(50.dp)
         .labelData { "" }
         .axisLineColor(Color.Transparent)
@@ -205,15 +210,16 @@ private fun PrecisionChartSection() {
             style = MaterialTheme.typography.titleSmall,
             color = colorScheme.onSurface
         )
-        // Texto 92% arriba centrado
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
             horizontalArrangement = Arrangement.Center
         ) {
+            val valueToShow = precisionActual ?: lastPoint.y.toInt()
             Text(
-                text = "${lastPoint.y.toInt()}%",
+                text = "${valueToShow}%",
                 style = MaterialTheme.typography.headlineSmall.copy(
                     fontWeight = FontWeight.Bold
                 ),
@@ -225,7 +231,7 @@ private fun PrecisionChartSection() {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(220.dp)
-                .padding(start = 16.dp, end = 8.dp)
+                .padding(start = 16.dp, end = 16.dp)
                 .background(colorScheme.surface),
             lineChartData = lineChartData
         )
@@ -236,6 +242,10 @@ private fun PrecisionChartSection() {
 @Composable
 fun PrecisionChartCardPreview() {
     CameraTestTheme(darkTheme = false) {
-        PrecisionChartCard()
+        PrecisionChartCard(
+            resumen = "Ejemplo de resumen de IA.",
+            chartValues = listOf(78f, 80f, 82f, 85f, 87f, 90f),
+            precisionActual = 90
+        )
     }
 }
