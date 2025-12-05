@@ -9,11 +9,14 @@ import androidx.compose.material.icons.automirrored.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cameratest.navigation.EditUserScreenRoute
@@ -28,6 +31,7 @@ import com.example.cameratest.ui.screens.home.components.RealTimeSessionCard
 import com.example.cameratest.ui.theme.Bar_chart_4_bars
 import com.example.cameratest.ui.theme.CameraTestTheme
 import com.example.cameratest.ui.theme.History
+import com.example.cameratest.ui.viewmodels.HomeViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,6 +41,8 @@ fun HomeScreen(
     navController: NavController
 ) {
     val colorScheme = MaterialTheme.colorScheme
+    val homeViewModel: HomeViewModel = viewModel()
+    val username by homeViewModel.username.collectAsState(initial = "")
 
     // Estado del drawer
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -74,7 +80,7 @@ fun HomeScreen(
                     onClick = {
                         scope.launch { drawerState.close() }
                         navController.navigate(LoginScreenRoute) {
-                            // Limpia el back stack para que no pueda volver con back
+                            homeViewModel.logout()
                             popUpTo(0) { inclusive = true }
                         }
                     },
@@ -106,7 +112,7 @@ fun HomeScreen(
 
                 // ================= HEADER =================
                 HomeHeader(
-                    userName = "Alex",
+                    userName = username,
                     streakText = "Tu racha actual: 4 días tocando.",
                     onSettingsClick = {
                         scope.launch { drawerState.open() }
@@ -127,7 +133,8 @@ fun HomeScreen(
                 // ====== AI PRO TIP DEL DÍA ======
                 AiTipCard(
                     tipTitle = "AI Pro Tip del Día:",
-                    tipBody = "Intenta relajar más la muñeca izquierda en los arpegios hoy."
+                    tipBody = if (homeViewModel.tipText.isNotEmpty()) homeViewModel.tipText else "Cargando tip...",
+                    onClick = { homeViewModel.loadProTip() }
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))

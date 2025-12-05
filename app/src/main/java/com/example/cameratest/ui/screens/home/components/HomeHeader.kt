@@ -40,7 +40,8 @@ fun HomeHeader(
     streakText: String,
     onSettingsClick: () -> Unit
 ) {
-
+    val safeName = userName.ifBlank { "Invitado" }
+    val initial = safeName.firstOrNull()?.uppercaseChar() ?: 'A'
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -101,9 +102,9 @@ fun HomeHeader(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = userName.first().toString(),
+                            text = initial.toString(),
                             style = MaterialTheme.typography.bodyMedium.copy(
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.SemiBold
                             ),
                             color = Color(0xFF5A2B9C)
                         )
@@ -112,7 +113,7 @@ fun HomeHeader(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Text(
-                        text = "$userName Taco",
+                        text = safeName,
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.SemiBold
                         ),
@@ -134,7 +135,7 @@ fun HomeHeader(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = "Hola, $userName.",
+                text = "Hola, $safeName.",
                 style = MaterialTheme.typography.headlineMedium.copy(
                     fontWeight = FontWeight.SemiBold
                 ),

@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cameratest.navigation.HomeScreenRoute
@@ -39,6 +41,7 @@ import com.example.cameratest.ui.screens.auth.components.HeaderAuth
 import com.example.cameratest.ui.screens.components.AuralisPasswordField
 import com.example.cameratest.ui.screens.components.AuralisTextField
 import com.example.cameratest.ui.theme.CameraTestTheme
+import com.example.cameratest.ui.viewmodels.AuthViewModel
 
 @Composable
 fun LoginScreen(
@@ -46,9 +49,20 @@ fun LoginScreen(
     navController: NavController
 ) {
     val colorScheme = MaterialTheme.colorScheme
-
+    val authViewModel: AuthViewModel = viewModel()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    LaunchedEffect(authViewModel.isLogged) {
+        if (authViewModel.isLogged){
+            navController.navigate(HomeScreenRoute){
+                popUpTo(LoginScreenRoute){
+                    inclusive = true
+                }
+                launchSingleTop = true
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -81,7 +95,7 @@ fun LoginScreen(
                 AuralisTextField(
                     value = email,
                     onValueChange = { email = it },
-                    placeholder = "Full Name",
+                    placeholder = "Email",
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Person,
@@ -114,13 +128,12 @@ fun LoginScreen(
                 AuthActionButton(
                     title = "Sign In",
                     onClick = {
-                        // TODO: validaciones de login
-                        navController.navigate(HomeScreenRoute){
-                            popUpTo(LoginScreenRoute){
-                                inclusive = true
-                            }
-                            launchSingleTop = true
-                        }
+                        if (email.isBlank() || password.isBlank()) return@AuthActionButton
+
+                        authViewModel.login(
+                            email = email,
+                            password = password
+                        )
                     }
                 )
 

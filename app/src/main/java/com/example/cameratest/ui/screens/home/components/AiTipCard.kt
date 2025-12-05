@@ -1,6 +1,7 @@
 package com.example.cameratest.ui.screens.home.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,7 +28,8 @@ import com.example.cameratest.ui.theme.LightbulbSparkle
 @Composable
 fun AiTipCard(
     tipTitle: String,
-    tipBody: String
+    tipBody: String,
+    onClick: () -> Unit
 ) {
     val colorScheme = MaterialTheme.colorScheme
 
@@ -37,6 +39,7 @@ fun AiTipCard(
             .clip(RoundedCornerShape(16.dp))
             .background(colorScheme.surfaceVariant.copy(alpha = 0.8f))
             .padding(horizontal = 20.dp, vertical = 16.dp)
+            .clickable(onClick = onClick)
     ) {
         Column{
             Row(
@@ -75,7 +78,8 @@ fun AiTipCard_Preview() {
         Surface {
             AiTipCard(
                 tipTitle = "Consejo del día",
-                tipBody = "Organiza tus tareas en pequeños pasos y prioriza lo más importante para avanzar sin bloqueos."
+                tipBody = "Organiza tus tareas en pequeños pasos y prioriza lo más importante para avanzar sin bloqueos.",
+                onClick = {  }
             )
         }
     }
