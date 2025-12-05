@@ -23,16 +23,6 @@ import com.example.cameratest.ui.viewmodels.SongViewModel
 
 enum class PracticeDifficulty { ALL, EASY, MEDIUM, HARD }
 
-data class PracticePiece(
-    val id: String,
-    val title: String,
-    val composer: String,
-    val difficulty: PracticeDifficulty,
-    val dateLabel: String,
-    val coverUrl: String? = null
-)
-
-
 // ======================= SCREEN =======================
 
 @Composable

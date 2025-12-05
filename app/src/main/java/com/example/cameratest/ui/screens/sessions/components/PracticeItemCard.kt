@@ -29,7 +29,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.cameratest.R
 import com.example.cameratest.ui.screens.sessions.PracticeDifficulty
-import com.example.cameratest.ui.screens.sessions.PracticePiece
+import com.example.cameratest.ui.screens.sessions.components.models.PracticePiece
 
 @Composable
 fun PracticeItemCard(

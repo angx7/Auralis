@@ -21,6 +21,7 @@ class HomeViewModel(
         private set
     val prefs = UserPrefs
     val username = prefs.getUserName(app)
+    val streak = prefs.getStreak(app)
     var isLoadingProTip by mutableStateOf(false)
     var isLoadingFirstProTip by mutableStateOf(true)
         private set

@@ -41,6 +41,7 @@ class AuthViewModel(
                 if (result.ok) {
                     prefs.saveUserName(app, result.user?.username ?: "")
                     prefs.saveAuthToken(app, result.token ?: "")
+                    prefs.saveStreak(app, result.streak ?: 0)
                     prefs.saveIsLogged(app, true)
 
                     isLogged = true
@@ -66,6 +67,7 @@ class AuthViewModel(
                 if (result.ok) {
                     prefs.saveUserName(app, result.user?.username ?: "")
                     prefs.saveAuthToken(app, result.token ?: "")
+                    prefs.saveStreak(app, result.streak ?: 0)
                     prefs.saveIsLogged(app, true)
 
                     isLogged = true

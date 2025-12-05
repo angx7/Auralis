@@ -3,6 +3,7 @@ package com.example.cameratest.data.services
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +17,7 @@ object UserPrefs {
     private val KEY_USER_NAME   = stringPreferencesKey("userName")
     private val KEY_IS_LOGGED = booleanPreferencesKey("isLogged")
     private val KEY_TOKEN     = stringPreferencesKey("authToken")
+    private val KEY_STREAK      = intPreferencesKey("loginStreak")
 
     // ================
     // GUARDAR
@@ -38,6 +40,12 @@ object UserPrefs {
         }
     }
 
+    suspend fun saveStreak(context: Context, streak: Int) {
+        context.dataStore.edit { prefs ->
+            prefs[KEY_STREAK] = streak
+        }
+    }
+
     // ================
     // LEER (Flow)
     // ================
@@ -54,6 +62,11 @@ object UserPrefs {
     fun getAuthToken(context: Context): Flow<String> =
         context.dataStore.data.map { prefs ->
             prefs[KEY_TOKEN] ?: ""
+        }
+
+    fun getStreak(context: Context): Flow<Int> =
+        context.dataStore.data.map { prefs ->
+            prefs[KEY_STREAK] ?: 0
         }
 
     suspend fun getAuthTokenOnce(context: Context): String {

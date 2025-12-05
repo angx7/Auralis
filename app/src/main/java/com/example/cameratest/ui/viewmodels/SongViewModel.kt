@@ -10,7 +10,7 @@ import com.example.cameratest.data.services.RetrofitInstance
 import com.example.cameratest.data.services.UserPrefs
 import com.example.cameratest.models.Song
 import com.example.cameratest.ui.screens.sessions.PracticeDifficulty
-import com.example.cameratest.ui.screens.sessions.PracticePiece
+import com.example.cameratest.ui.screens.sessions.components.models.PracticePiece
 import kotlinx.coroutines.launch
 
 class SongViewModel(
@@ -81,7 +81,6 @@ class SongViewModel(
         }
 
     private fun formatIsoDate(iso: String): String {
-        // "2025-12-05T06:16:12.423Z" -> "2025-12-05"
         return iso.take(10)
     }
 

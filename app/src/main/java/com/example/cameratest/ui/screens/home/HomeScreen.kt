@@ -45,6 +45,7 @@ fun HomeScreen(
     val colorScheme = MaterialTheme.colorScheme
     val homeViewModel: HomeViewModel = viewModel()
     val username by homeViewModel.username.collectAsState(initial = "")
+    val streak by homeViewModel.streak.collectAsState(initial = 0)
 
     // Estado del drawer
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -119,7 +120,7 @@ fun HomeScreen(
                 // ================= HEADER =================
                 HomeHeader(
                     userName = username,
-                    streakText = "Tu racha actual: 4 días tocando.",
+                    streakText = "Tu racha actual: $streak días tocando.",
                     onSettingsClick = {
                         scope.launch { drawerState.open() }
                     }
@@ -139,7 +140,7 @@ fun HomeScreen(
                 // ====== AI PRO TIP DEL DÍA ======
                 AiTipCard(
                     tipTitle = "AI Pro Tip del Día:",
-                    tipBody = if (homeViewModel.tipText.isNotEmpty()) homeViewModel.tipText else "Cargando tip...",
+                    tipBody = homeViewModel.tipText.ifEmpty { "Cargando tip..." },
                     onClick = { homeViewModel.loadProTip() }
                 )
 

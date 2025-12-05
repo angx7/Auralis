@@ -5,5 +5,6 @@ data class AuthResponse(
     val token : String?,
     val message: String?,
     val user: User?,
-    val error: String?
+    val error: String?,
+    val streak: Int? = null
 )

@@ -17,7 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.cameratest.ui.screens.sessions.SessionHistoryItem
+import com.example.cameratest.ui.screens.sessions.components.models.SessionHistoryItem
 
 @Composable
 fun SessionHistoryCard(
