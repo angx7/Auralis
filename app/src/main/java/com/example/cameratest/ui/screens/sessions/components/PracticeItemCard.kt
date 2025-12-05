@@ -91,7 +91,7 @@ fun PracticeItemCard(
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = "${piece.composer} - ${difficultyLabel(piece.difficulty)} · ${piece.duration}",
+                    text = "${piece.composer} - ${difficultyLabel(piece.difficulty)} · ${piece.dateLabel}",
                     style = MaterialTheme.typography.bodySmall,
                     color = colorScheme.onSurfaceVariant
                 )

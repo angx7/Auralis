@@ -9,23 +9,26 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.cameratest.ui.screens.components.AuralisLoadingOverlay
 import com.example.cameratest.ui.screens.components.AuralisScreenHeader
 import com.example.cameratest.ui.screens.sessions.components.PracticeFiltersRow
 import com.example.cameratest.ui.screens.sessions.components.PracticeItemCard
 import com.example.cameratest.ui.theme.CameraTestTheme
+import com.example.cameratest.ui.viewmodels.SongViewModel
 
 // ======================= MODELOS =======================
 
 enum class PracticeDifficulty { ALL, EASY, MEDIUM, HARD }
 
 data class PracticePiece(
-    val id: Int,
+    val id: String,
     val title: String,
     val composer: String,
     val difficulty: PracticeDifficulty,
-    val duration: String,
+    val dateLabel: String,
     val coverUrl: String? = null
 )
 
@@ -38,25 +41,22 @@ fun PracticeSelectionScreen(
     navController: NavController
 ) {
     val colorScheme = MaterialTheme.colorScheme
-
-    // Datos de ejemplo (luego esto va a venir de la API)
-    val allPieces = remember {
-        listOf(
-            PracticePiece(1, "Claro de Luna", "Beethoven", PracticeDifficulty.EASY, "3:45", "https://auralismusic.s3.us-east-1.amazonaws.com/Images/bethoveen_virus.png"),
-            PracticePiece(2, "Turkish March", "Mozart", PracticeDifficulty.MEDIUM, "2:30", "https://auralismusic.s3.us-east-1.amazonaws.com/Images/bethoveen_virus.png"),
-            PracticePiece(3, "Fantaisie-Impromptu", "Chopin", PracticeDifficulty.HARD, "5:15", "https://auralismusic.s3.us-east-1.amazonaws.com/Images/bethoveen_virus.png"),
-            PracticePiece(4, "Marion March", "Chopin - Mozart", PracticeDifficulty.EASY, "1:00", "https://auralismusic.s3.us-east-1.amazonaws.com/Images/bethoveen_virus.png"),
-            PracticePiece(5, "Miessinga der Right", "Chopin - Mozart", PracticeDifficulty.MEDIUM, "2:30", "https://auralismusic.s3.us-east-1.amazonaws.com/Images/bethoveen_virus.png"),
-            PracticePiece(6, "Even a World", "Chopin - Lahoro", PracticeDifficulty.EASY, "3:17", "https://auralismusic.s3.us-east-1.amazonaws.com/Images/bethoveen_virus.png"),
-            PracticePiece(7, "Turkish, March", "Mozart", PracticeDifficulty.MEDIUM, "2:30", "https://auralismusic.s3.us-east-1.amazonaws.com/Images/bethoveen_virus.png"),
-        )
-    }
-
+    val songViewModel: SongViewModel = viewModel()
+    val allPieces = songViewModel.allPieces
+    val isLoading = songViewModel.isLoading
+    val errorMessage = songViewModel.errorMessage
     var selectedFilter by remember { mutableStateOf(PracticeDifficulty.ALL) }
 
+    LaunchedEffect(Unit) {
+        songViewModel.loadSongs()
+    }
+
     val filteredPieces = remember(selectedFilter, allPieces) {
-        if (selectedFilter == PracticeDifficulty.ALL) allPieces
-        else allPieces.filter { it.difficulty == selectedFilter }
+        if (selectedFilter == PracticeDifficulty.ALL) {
+            allPieces
+        } else {
+            allPieces.filter { it.difficulty == selectedFilter }
+        }
     }
 
     Box(
@@ -104,6 +104,10 @@ fun PracticeSelectionScreen(
                 }
             }
         }
+    }
+
+    if (isLoading) {
+        AuralisLoadingOverlay()
     }
 }
 
