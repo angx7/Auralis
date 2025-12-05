@@ -39,10 +39,11 @@ class AuthViewModel(
                 )
                 val result = authService.login(login)
                 if (result.ok) {
-                    isLogged = true
-                    prefs.saveIsLogged(app, true)
                     prefs.saveUserName(app, result.user?.username ?: "")
                     prefs.saveAuthToken(app, result.token ?: "")
+                    prefs.saveIsLogged(app, true)
+
+                    isLogged = true
                 } else {
                     message = result.message ?: "Login failed"
                 }
@@ -63,10 +64,11 @@ class AuthViewModel(
                 )
                 val result = authService.register(registerBody)
                 if (result.ok) {
-                    isLogged = true
-                    prefs.saveIsLogged(app, true)
                     prefs.saveUserName(app, result.user?.username ?: "")
                     prefs.saveAuthToken(app, result.token ?: "")
+                    prefs.saveIsLogged(app, true)
+
+                    isLogged = true
                 } else {
                     message = result.message ?: "Registration failed"
                 }

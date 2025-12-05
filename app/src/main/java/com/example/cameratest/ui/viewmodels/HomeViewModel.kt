@@ -22,14 +22,8 @@ class HomeViewModel(
     val prefs = UserPrefs
     val username = prefs.getUserName(app)
     var isLoadingProTip by mutableStateOf(false)
-
-    init {
-        viewModelScope.launch {
-            // Puedes realizar alguna acción inicial si es necesario
-            loadProTip()
-        }
-    }
-
+    var isLoadingFirstProTip by mutableStateOf(true)
+        private set
     fun loadProTip() {
         viewModelScope.launch {
             try {
@@ -40,7 +34,10 @@ class HomeViewModel(
                 val token = UserPrefs.getAuthTokenOnce(app)
 
                 if (token.isEmpty()) {
-                    message = "No hay token guardado"
+                    tipText = "Se ha vencido su token. Por favor, inicia sesión de nuevo."
+                    isLoadingProTip = false
+                    isLoadingFirstProTip = false
+                    message = "No hay token guardado. Por favor, inicia sesión de nuevo."
                     return@launch
                 }
 
@@ -49,14 +46,17 @@ class HomeViewModel(
 
                 if (response.ok && response.tip != null) {
                     isLoadingProTip = false
+                    isLoadingFirstProTip = false
                     tipText = response.tip
                     message = ""
                 } else {
                     isLoadingProTip = false
+                    isLoadingFirstProTip = false
                     message = response.tip ?: "No se pudo obtener el tip"
                 }
             } catch (e: Exception) {
                 isLoadingProTip = false
+                isLoadingFirstProTip = false
                 tipText = "Error al obtener el tip"
                 message = "Error al obtener el tip"
                 println(e)

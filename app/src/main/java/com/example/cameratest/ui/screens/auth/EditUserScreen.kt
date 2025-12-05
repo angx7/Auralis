@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,13 +30,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cameratest.ui.screens.auth.components.AuthActionButton
 import com.example.cameratest.ui.screens.auth.components.HeaderAuth
+import com.example.cameratest.ui.screens.components.AuralisLoadingOverlay
 import com.example.cameratest.ui.screens.components.AuralisPasswordField
 import com.example.cameratest.ui.screens.components.AuralisTextField
 import com.example.cameratest.ui.theme.CameraTestTheme
+import com.example.cameratest.ui.viewmodels.EditUserViewModel
 
 @Composable
 fun EditUserScreen(
@@ -43,10 +47,22 @@ fun EditUserScreen(
     navController: NavController
 ) {
     val colorScheme = MaterialTheme.colorScheme
+    val viewModel: EditUserViewModel = viewModel()
+    val username = viewModel.username
+    val email = viewModel.email
+    val message = viewModel.message
+    val isLoading = viewModel.isLoading
+    val updateSuccess = viewModel.updateSuccess
 
-    // En un futuro estos valores vendrán de tu ViewModel / prefs / backend
-    var fullName by remember { mutableStateOf("Alex Taco") }
-    var email by remember { mutableStateOf("alex@auralis.app") }
+    LaunchedEffect(Unit) {
+        viewModel.loadUserProfile()
+    }
+
+    LaunchedEffect(updateSuccess) {
+        if (updateSuccess) {
+            navController.popBackStack()
+        }
+    }
 
 
     Box(
@@ -78,9 +94,9 @@ fun EditUserScreen(
 
                 // FULL NAME
                 AuralisTextField(
-                    value = fullName,
-                    onValueChange = { fullName = it },
-                    placeholder = "Full Name",
+                    value = username,
+                    onValueChange = viewModel::onUsernameChange,
+                    placeholder = "Username",
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Person,
@@ -95,7 +111,7 @@ fun EditUserScreen(
                 // EMAIL
                 AuralisTextField(
                     value = email,
-                    onValueChange = { email = it },
+                    onValueChange = viewModel::onEmailChange,
                     placeholder = "Email",
                     leadingIcon = {
                         Icon(
@@ -112,9 +128,9 @@ fun EditUserScreen(
                 AuthActionButton(
                     title = "Save changes",
                     onClick = {
-                        // TODO: validaciones y lógica de actualización
-                        // Por ahora, solo regresamos a la pantalla anterior
-                        navController.popBackStack()
+                        if (username.isNotBlank() && email.isNotBlank()) {
+                            viewModel.updateProfile()
+                        }
                     }
                 )
 
@@ -140,6 +156,9 @@ fun EditUserScreen(
                 }
             }
         }
+    }
+    if (isLoading){
+        AuralisLoadingOverlay()
     }
 }
 

@@ -13,7 +13,7 @@ private val Context.dataStore by preferencesDataStore(name  = "user_prefs")
 
 object UserPrefs {
     // 2) Claves
-    private val KEY_USER_NAME   = stringPreferencesKey("userId")
+    private val KEY_USER_NAME   = stringPreferencesKey("userName")
     private val KEY_IS_LOGGED = booleanPreferencesKey("isLogged")
     private val KEY_TOKEN     = stringPreferencesKey("authToken")
 

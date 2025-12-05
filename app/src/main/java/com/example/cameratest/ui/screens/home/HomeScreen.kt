@@ -9,6 +9,7 @@ import androidx.compose.material.icons.automirrored.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -24,6 +25,7 @@ import com.example.cameratest.navigation.HistoryScreenRoute
 import com.example.cameratest.navigation.LoginScreenRoute
 import com.example.cameratest.navigation.PracticeScreenRoute
 import com.example.cameratest.navigation.ProgressScreenRoute
+import com.example.cameratest.ui.screens.components.AuralisLoadingOverlay
 import com.example.cameratest.ui.screens.home.components.AiTipCard
 import com.example.cameratest.ui.screens.home.components.HomeHeader
 import com.example.cameratest.ui.screens.home.components.HomeSquareButton
@@ -47,6 +49,10 @@ fun HomeScreen(
     // Estado del drawer
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        homeViewModel.loadProTip()
+    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -161,6 +167,9 @@ fun HomeScreen(
                     }
                 }
             }
+        }
+        if (homeViewModel.isLoadingFirstProTip){
+            AuralisLoadingOverlay()
         }
     }
 }
