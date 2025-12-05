@@ -37,4 +37,7 @@ object RetrofitInstance {
         retrofit.create(SongService::class.java)
     }
 
+    val historyService: HistoryService by lazy {
+        retrofit.create(HistoryService::class.java)
+    }
 }
