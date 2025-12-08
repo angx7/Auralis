@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.cameratest.navigation.CameraScreenRoute
 import com.example.cameratest.navigation.EditUserScreenRoute
 import com.example.cameratest.navigation.HistoryScreenRoute
 import com.example.cameratest.navigation.HomeScreenRoute
@@ -20,6 +21,7 @@ import com.example.cameratest.navigation.RegisterScreenRoute
 import com.example.cameratest.ui.screens.auth.EditUserScreen
 import com.example.cameratest.ui.screens.auth.LoginScreen
 import com.example.cameratest.ui.screens.auth.RegisterScreen
+import com.example.cameratest.ui.screens.camera.CameraScreen
 import com.example.cameratest.ui.screens.home.HomeScreen
 import com.example.cameratest.ui.screens.sessions.HistoryScreen
 import com.example.cameratest.ui.screens.sessions.PracticeSelectionScreen
@@ -79,6 +81,9 @@ class MainActivity : ComponentActivity() {
                                 innerPadding = innerPadding,
                                 navController = navController
                             )
+                        }
+                        composable<CameraScreenRoute> {
+                            CameraScreen()
                         }
                     }
                 }

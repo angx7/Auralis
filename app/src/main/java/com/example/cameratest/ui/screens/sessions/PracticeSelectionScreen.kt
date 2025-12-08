@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.cameratest.navigation.CameraScreenRoute
 import com.example.cameratest.ui.screens.components.AuralisLoadingOverlay
 import com.example.cameratest.ui.screens.components.AuralisScreenHeader
 import com.example.cameratest.ui.screens.sessions.components.PracticeFiltersRow
@@ -88,7 +89,9 @@ fun PracticeSelectionScreen(
                     PracticeItemCard(
                         piece = piece,
                         onClick = {
-                            // TODO: navegar al detalle / sesión con esta pieza
+                            navController.navigate(
+                                CameraScreenRoute
+                            )
                         }
                     )
                 }
